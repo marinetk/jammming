@@ -33,17 +33,14 @@ export class App extends React.Component {
     }
 
     removeTrack(track) {
-        const tracks = this.state.playlistTracks;
-        if (tracks.find(savedTrack => savedTrack.id !== track.id)) {
-            return;
-        } else {
-          const trackIndex = tracks.findIndex(track => {
-            return savedTrack => savedTrack.id === track.id
-          });
-          tracks.splice(trackIndex, 1);
-          this.setState({playlistTracks: tracks})
+        const playlistTracks = this.state.playlistTracks;
+        const playlistTrackIndex = playlistTracks.findIndex(playlistTrack => {
+          return track.id === playlistTrack.id
+        });
+          playlistTracks.splice(playlistTrackIndex, 1);
+          this.setState({playlistTracks: playlistTracks})
       }
-    }
+
 
     search(searchTerm) {
           Spotify.search(searchTerm).then(searchTracks => {
@@ -51,8 +48,8 @@ export class App extends React.Component {
         });
     }
 
-    updatePlaylistName(name) {
-        this.setState({playlistName: name})
+    updatePlaylistName(e) {
+        this.setState({playlistName: e.target.value})
     }
 
     savePlaylist(){
@@ -67,8 +64,8 @@ export class App extends React.Component {
     }
     render() {
         return (
-          <div >
-            <h1 > Ja < span className = "highlight" > mmm < /span> ing</h1 >
+          <div>
+            <h1> Ja<span className="highlight">mmm</span>ing</h1>
             <div className = "App" >
               <SearchBar onSearch = {this.search} />
               <div className = "App-playlist" >
@@ -78,7 +75,7 @@ export class App extends React.Component {
                 />
                 <Playlist
                   playlistName = {this.state.playlistName}
-                  onNameChange = {this.updatePlaylist}
+                  onChange = {this.updatePlaylistName}
                   onSave = {this.savePlaylist}
                   playlistTracks = {this.state.playlistTracks}
                   onRemove = {this.removeTrack}
